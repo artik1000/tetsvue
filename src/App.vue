@@ -10,14 +10,20 @@
     </header>
     <main class="main">
       <section class="main__form">
-        <my-form/>
+        <my-form
+                v-model="formData"
+                :formData="formData"
+                @create="createItem"
+        />
       </section>
       <section class="main__items__grid">
+        <transition-group name="item">
         <my-item
                 v-for="item in items"
                 :key="item.id"
                 :item="item"
         />
+        </transition-group>
       </section>
     </main>
   </div>
@@ -43,8 +49,29 @@ export default {
               {id: 3, name: 'Название', description: 'Описание', link: 'https://img.freepik.com/premium-photo/beautiful-moraine-lake-in-banff-national-park-alberta-canada_131985-98.jpg?w=2000', price: '5000'},
               {id: 4, name: 'Название', description: 'Описание', link: 'https://img.freepik.com/premium-photo/beautiful-moraine-lake-in-banff-national-park-alberta-canada_131985-98.jpg?w=2000', price: '5000'},
               {id: 5, name: 'Название', description: 'Описание', link: 'https://img.freepik.com/premium-photo/beautiful-moraine-lake-in-banff-national-park-alberta-canada_131985-98.jpg?w=2000', price: '5000'},
-          ]
+          ],
+          formData: {
+              name: '',
+              description: 'Ведите описание товара',
+              link: '',
+              price: '',
+          }
       }
+  },
+  methods: {
+      createItem () {
+          this.formData.id = Date.now();
+          if(this.formData.description === 'Ведите описание товара'){
+              this.formData.description = ''
+          }
+          this.items.push(this.formData);
+          this.formData = {
+              name: '',
+              description: '',
+              link: '',
+              price: '',
+          }
+      },
   }
 }
 </script>
@@ -78,6 +105,13 @@ input, textarea, select
     color: #3F3F3F
     margin: 0
     padding: 0
+.item-enter-active,.item-leave-active
+  transition: all 1s ease
+.item-enter-from,.item-leave-to
+  opacity: 0
+  transform: translateX(30px)
+.item-move
+  transition: 0.4s ease
 @media screen and (min-width: 1201px)
 .main
   display: grid
@@ -137,7 +171,5 @@ input, textarea, select
     gap: 16px
     grid-auto-rows: min-content
   .main__form
-    margin-right: 0px
-
-
+    margin: 0
 </style>
