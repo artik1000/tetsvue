@@ -68,11 +68,8 @@ export default {
     background: #FFFEFB
     box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.04), 0px 6px 10px rgba(0, 0, 0, 0.02)
     border-radius: 4px
-    height: min-content
+    height: 100%
     position: relative
-.image
-    width: 100%
-    border-radius: 4px 4px 0px 0px
 .item__data
     display: flex
     flex-direction: column
@@ -102,4 +99,14 @@ export default {
     position: absolute
     right: -10px
     top: -12px
+@media screen and (min-width: 1201px)
+ .image
+    width: 100%
+    border-radius: 4px 4px 0px 0px
+    height: 25vh
+@media screen and (max-width: 1200px)
+ .image
+    width: 100%
+    border-radius: 4px 4px 0px 0px
+    height: 100%
 </style>
