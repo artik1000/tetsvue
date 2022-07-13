@@ -1,0 +1,39 @@
+<template>
+<select class="select">
+        <option class="option" value="" disabled selected>По умолчанию</option>
+        <option></option>
+</select>
+</template>
+<script>
+export default {
+    name: 'my-select',
+    props:{
+
+    }
+}
+</script>
+<style lang="sass" scoped>
+.select
+    background-color: #FFFEFB
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1)
+    border-radius: 4px
+    border: transparent
+    color: #B4B4B4
+    height: 36px
+    padding: 10px 26px 10px 16px
+    background-repeat: no-repeat
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.48532 1.24264L4.24268 4.48528L1.00003 1.24264' stroke='%23B4B4B4'/%3E%3C/svg%3E")
+    background-position: calc(10px + 100px) 16px
+.select:hover,
+.select:focus,
+.select:active,
+.select:checked
+    color: black
+    background-repeat: no-repeat
+    background-position: calc(10px + 100px) 16px
+    background-image: url("data:image/svg+xml,%3Csvg width='8' height='6' viewBox='0 0 8 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.48532 1.24264L4.24268 4.48528L1.00003 1.24264' stroke='%23000000'/%3E%3C/svg%3E")
+.option
+    color: #34495E
+    font-size: 15px
+    font-weight: bold
+</style>
