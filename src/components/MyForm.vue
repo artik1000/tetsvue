@@ -1,6 +1,7 @@
 <template>
-    <div class="form__container">
-        <form class="form">
+    <div class="form__container"
+    >
+        <form class="form" id="form" onsubmit="return false">
             <div class="label__row form__label">
                 <div>
                     <label for="nameinput" >Наименование товара</label>
@@ -16,7 +17,12 @@
                     placeholder="Ведите наименование товара"
                     id="nameinput"
                     type="text"
+                    v-model="formData.name"
+                    :class="{form__input__invalid: formData.name === '' && invalid === 1}"
+                    @input="checkValid()"
+                    required
             />
+            <span v-if="formData.name === '' && invalid === 1" class="invalid__message">Поле является обязательным</span>
             <label class="form__label" for="descriptioninput" >Описание товара</label>
             <textarea
                     class="form__textarea"
@@ -24,6 +30,7 @@
                     rows="30"
                     cols="30"
                     id="descriptioninput"
+                    v-model="formData.description"
             ></textarea>
             <div class="label__row form__label">
                 <div>
@@ -40,9 +47,12 @@
                     placeholder="Ведите ссылку"
                     id="linkinput"
                     type="text"
+                    v-model.trim="formData.link"
+                    :class="{form__input__invalid: formData.link === '' && invalid === 1}"
+                    @input="checkValid()"
                     required
             />
-            <span class="invalid__message">Поле является обязательным</span>
+            <span v-if="formData.link === '' && invalid === 1" class="invalid__message">Поле является обязательным</span>
             <div class="label__row form__label">
                 <div>
                     <label for="priceinput" >Цена товара</label>
@@ -57,11 +67,18 @@
                     class="form__input"
                     placeholder="Ведите цену"
                     id="priceinput"
-                    type="number"
+                    v-model="formData.price"
+                    @input="checkValid()"
+                    :class="{form__input__invalid: formData.price === '' && invalid === 1}"
+                    v-maska="{ mask: 'Z*M.Z*', tokens: { 'Z': { pattern: /[0-9]/ }, 'M': { pattern: /\s/ }}}"
+                    required
             />
+            <span v-if="formData.price === '' && invalid === 1" class="invalid__message">Поле является обязательным</span>
             <button
                     class="form__button"
-                    disabled="disabled"
+                    id="button"
+                    :disabled="invalid === 0 || invalid === 1"
+                    @click="createItem(formData)"
             >
                 Добавить товар
             </button>
@@ -69,11 +86,42 @@
     </div>
 </template>
 <script>
+import { maska } from 'maska'
 export default {
     name: 'my-form',
+    directives: { maska },
     props:{
-
-    }
+        formData: {
+            type: Object,
+            required: {
+                type: Boolean,
+                default: true
+            }
+        }
+    },
+    data () {
+      return {
+          invalid: 0,
+      }
+    },
+    methods:{
+        createItem (formData) {
+            formData.price = formData.price.replace(' .','.');
+            //formData.link = formData.link.replace(' ','');
+            if(this.invalid === 2){
+                this.invalid = 0;
+                this.$emit('create')
+            }
+        },
+        checkValid () {
+            let a = document.getElementById('form').checkValidity();
+            if ( a === true) {
+                this.invalid = 2;
+            } else {
+                this.invalid = 1
+            }
+        }
+    },
 }
 </script>
 <style lang="sass" scoped>
@@ -145,8 +193,10 @@ export default {
     width: max-content
 .red__point
     margin-top: -5px
-.form__input:invalid
-    border: 1px solid red
+.form__input__invalid
+    border: 1px solid #FF8484
+.form__input:valid
+    border: 1px solid #7BAE73
 .invalid__message
     font-weight: 400
     font-size: 8px
@@ -154,4 +204,7 @@ export default {
     letter-spacing: -0.02em
     color: #FF8484
     margin-top: 4px
+.textarea__default
+    color: #B4B4B4
+
 </style>
